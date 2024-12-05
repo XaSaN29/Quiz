@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from quiz.views import UserCreateAPIView, UserConfirmationView, UserLoginAPIView
+from quiz.views import UserCreateAPIView, UserConfirmationView, UserLoginAPIView, ShopListAPIView, ShopCreateAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,7 @@ urlpatterns = [
     path('user-create/', UserCreateAPIView.as_view(), name='user_create'),
     path('user-confirm/', UserConfirmationView.as_view(), name='user_confirm'),
     path('user-login/', UserLoginAPIView.as_view(), name='user_login'),
+    path('shop-list/', ShopListAPIView.as_view(), name='shop_list'),
+    path('shop-create/', ShopCreateAPIView.as_view(), name='shop_create'),
 
 ]

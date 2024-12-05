@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -11,8 +11,8 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-from quiz.models import Users
-from quiz.serilayzer import UserSerializer, ConfSerializer, LoginSerializer
+from quiz.models import Users, Shop
+from quiz.serilayzer import UserSerializer, ConfSerializer, LoginSerializer, ShopSerializer, ShopListSerializer
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -80,3 +80,12 @@ class UserLoginAPIView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ShopListAPIView(ListAPIView):
+    queryset = Shop.objects.all()
+    serializer_class = ShopListSerializer
+
+
+class ShopCreateAPIView(CreateAPIView):
+    queryset = Shop.objects.all()
+    serializer_class = ShopSerializer

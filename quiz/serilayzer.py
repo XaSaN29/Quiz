@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate
 
 
-from quiz.models import Users, UserConfig
+from quiz.models import Users, UserConfig, Shop
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,3 +51,15 @@ class LoginSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class ShopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = ['name', 'abut', 'amount', 'coin', 'is_active', 'sale']
+
+
+class ShopListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = ['name', 'abut', 'amount', 'coin', 'is_active', 'sale', 'sale_price']

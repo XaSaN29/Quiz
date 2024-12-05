@@ -28,6 +28,10 @@ class Shop(BaseModelClass):
     def __str__(self):
         return self.name
 
+    @property
+    def sale_price(self):
+        return self.coin - (self.amount * self.sale) / 100
+
 
 class Users(AbstractUser, BaseModelClass):
     class UserAdmin(models.TextChoices):

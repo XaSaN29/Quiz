@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate
 
 
-from quiz.models import Users, UserConfig, Shop
+from quiz.models import Users, UserConfig, Shop, Sciences, Test, Questions, Variants
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -63,3 +63,32 @@ class ShopListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
         fields = ['name', 'abut', 'amount', 'coin', 'is_active', 'sale', 'sale_price']
+
+
+class SciencesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sciences
+        fields = ['name']
+
+
+class TestSerializer(serializers.ModelSerializer):
+    sciences = serializers.SlugRelatedField(
+        queryset=Sciences.objects.all(),
+        slug_field='slug'
+    )
+
+    class Meta:
+        model = Test
+        fields = ['name', 'degree', 'about', 'sciences']
+
+
+class QuestionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = ['about', 'test']
+
+
+class VariantsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Variants
+        fields = ['text', 'is_true', 'question']

@@ -11,8 +11,9 @@ from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-from quiz.models import Users, Shop
-from quiz.serilayzer import UserSerializer, ConfSerializer, LoginSerializer, ShopSerializer, ShopListSerializer
+from quiz.models import Users, Shop, Sciences, Test, Questions, Variants
+from quiz.serilayzer import UserSerializer, ConfSerializer, LoginSerializer, ShopSerializer, ShopListSerializer, \
+    SciencesSerializer, TestSerializer, QuestionsSerializer, VariantsSerializer
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -89,3 +90,44 @@ class ShopListAPIView(ListAPIView):
 class ShopCreateAPIView(CreateAPIView):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
+
+
+class SciencesCreateAPIView(CreateAPIView):
+    queryset = Sciences.objects.all()
+    serializer_class = SciencesSerializer
+
+
+class SciencesListAPIView(ListAPIView):
+    queryset = Sciences.objects.all()
+    serializer_class = SciencesSerializer
+
+
+class TestListAPIView(ListAPIView):
+    queryset = Test.objects.all()
+    serializer_class = TestSerializer
+
+
+class TestCreateAPIView(CreateAPIView):
+    queryset = Test.objects.all()
+    serializer_class = TestSerializer
+
+
+class QuestionsListAPIView(ListAPIView):
+    queryset = Questions.objects.all()
+    serializer_class = QuestionsSerializer
+
+
+class QuestionsCreateAPIView(CreateAPIView):
+    queryset = Questions.objects.all()
+    serializer_class = QuestionsSerializer
+
+
+class VariantsListAPIView(ListAPIView):
+    queryset = Variants.objects.all()
+    serializer_class = VariantsSerializer
+
+
+class VariantsCreateAPIView(CreateAPIView):
+    queryset = Variants.objects.all()
+    serializer_class = VariantsSerializer
+

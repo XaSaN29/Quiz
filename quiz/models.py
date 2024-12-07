@@ -6,6 +6,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.db.models import Q
+from django.utils.text import slugify
+
 
 
 class BaseModelClass(models.Model):
@@ -87,6 +89,16 @@ class UserConfig(BaseModelClass):
 
 class Sciences(BaseModelClass):
     name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True, editable=False)
+
+    def save(self, *args, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.slug = slugify(self.name)
+        a = 1
+        while Sciences.objects.filter(slug=self.slug).exists():
+            self.slug += f'{self.slug} + {a}'
+
+        super().save(*args, force_insert=force_insert, force_update=force_update, using=using,
+                     update_fields=update_fields)
 
     def __str__(self):
         return self.name

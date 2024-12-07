@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from quiz.views import UserCreateAPIView, UserConfirmationView, UserLoginAPIView, ShopListAPIView, ShopCreateAPIView
+from quiz.views import UserCreateAPIView, UserConfirmationView, UserLoginAPIView, ShopListAPIView, ShopCreateAPIView, \
+    SciencesCreateAPIView, SciencesListAPIView, TestCreateAPIView, TestListAPIView, QuestionsListAPIView, \
+    QuestionsCreateAPIView, VariantsListAPIView, VariantsCreateAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +30,13 @@ urlpatterns = [
     path('user-login/', UserLoginAPIView.as_view(), name='user_login'),
     path('shop-list/', ShopListAPIView.as_view(), name='shop_list'),
     path('shop-create/', ShopCreateAPIView.as_view(), name='shop_create'),
+    path('science-create/', SciencesCreateAPIView.as_view(), name='science_create'),
+    path('science-list/', SciencesListAPIView.as_view(), name='science_list'),
+    path('test-create/', TestCreateAPIView.as_view(), name='test_create'),
+    path('test-list/', TestListAPIView.as_view(), name='test_list'),
+    path('question-create/', QuestionsCreateAPIView.as_view(), name='question_create'),
+    path('question-list/', QuestionsListAPIView.as_view(), name='question_list'),
+    path('variant-list/', VariantsListAPIView.as_view(), name='variant_list'),
+    path('variant-create/', VariantsCreateAPIView.as_view(), name='variant_create'),
 
 ]

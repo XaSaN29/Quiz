@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from quiz.views import UserCreateAPIView, UserConfirmationView, UserLoginAPIView, ShopListAPIView, ShopCreateAPIView, \
     SciencesCreateAPIView, SciencesListAPIView, TestCreateAPIView, TestListAPIView, QuestionsListAPIView, \
     QuestionsCreateAPIView, VariantsListAPIView, VariantsCreateAPIView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

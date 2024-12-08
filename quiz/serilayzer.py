@@ -66,9 +66,11 @@ class ShopListSerializer(serializers.ModelSerializer):
 
 
 class SciencesSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Sciences
-        fields = ['name']
+        fields = ['id', 'name']
 
 
 class TestSerializer(serializers.ModelSerializer):
@@ -76,19 +78,26 @@ class TestSerializer(serializers.ModelSerializer):
         queryset=Sciences.objects.all(),
         slug_field='slug'
     )
+    id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Test
-        fields = ['name', 'degree', 'about', 'sciences']
+        fields = ['id', 'name', 'degree', 'about', 'sciences']
 
 
 class QuestionsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    test = serializers.CharField(source='test.name', read_only=True)
+
     class Meta:
         model = Questions
-        fields = ['about', 'test']
+        fields = ['id', 'about', 'test']
 
 
 class VariantsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    question = serializers.CharField(source='question.about', read_only=True)
+
     class Meta:
         model = Variants
-        fields = ['text', 'is_true', 'question']
+        fields = ['id', 'text', 'is_true', 'question']

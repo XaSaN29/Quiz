@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,8 +10,9 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import filters
 
-
+from quiz.filter import TestFilter, QuestionsFilter, VariantsFilter
 from quiz.models import Users, Shop, Sciences, Test, Questions, Variants
 from quiz.serilayzer import UserSerializer, ConfSerializer, LoginSerializer, ShopSerializer, ShopListSerializer, \
     SciencesSerializer, TestSerializer, QuestionsSerializer, VariantsSerializer
@@ -100,11 +102,15 @@ class SciencesCreateAPIView(CreateAPIView):
 class SciencesListAPIView(ListAPIView):
     queryset = Sciences.objects.all()
     serializer_class = SciencesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
 
 class TestListAPIView(ListAPIView):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = TestFilter
 
 
 class TestCreateAPIView(CreateAPIView):
@@ -115,6 +121,8 @@ class TestCreateAPIView(CreateAPIView):
 class QuestionsListAPIView(ListAPIView):
     queryset = Questions.objects.all()
     serializer_class = QuestionsSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = QuestionsFilter
 
 
 class QuestionsCreateAPIView(CreateAPIView):
@@ -125,6 +133,8 @@ class QuestionsCreateAPIView(CreateAPIView):
 class VariantsListAPIView(ListAPIView):
     queryset = Variants.objects.all()
     serializer_class = VariantsSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = VariantsFilter
 
 
 class VariantsCreateAPIView(CreateAPIView):

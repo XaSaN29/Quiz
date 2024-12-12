@@ -1,6 +1,8 @@
 from django_filters.rest_framework import FilterSet, filters
 
-from quiz.models import Test, Questions, Variants
+from quiz.models import (
+    Test, Questions, Variants
+)
 
 
 class TestFilter(FilterSet):

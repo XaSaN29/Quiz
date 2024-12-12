@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     #My apps
     'quiz',
+    'responses',
 
 
     #Installed apps

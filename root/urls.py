@@ -18,9 +18,13 @@ from django.contrib import admin
 from django.urls import path
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from quiz.views import UserCreateAPIView, UserConfirmationView, UserLoginAPIView, ShopListAPIView, ShopCreateAPIView, \
-    SciencesCreateAPIView, SciencesListAPIView, TestCreateAPIView, TestListAPIView, QuestionsListAPIView, \
-    QuestionsCreateAPIView, VariantsListAPIView, VariantsCreateAPIView
+from quiz.views import (
+    UserCreateAPIView, UserConfirmationView, UserLoginAPIView,
+    ShopListAPIView, ShopCreateAPIView, SciencesCreateAPIView,
+    SciencesListAPIView, TestCreateAPIView, TestListAPIView,
+    QuestionsListAPIView, QuestionsCreateAPIView, VariantsListAPIView,
+    VariantsCreateAPIView, SciencesDetailAPIView, ShopSotibolishAPIView
+)
 
 
 urlpatterns = [
@@ -40,5 +44,7 @@ urlpatterns = [
     path('question-list/', QuestionsListAPIView.as_view(), name='question_list'),
     path('variant-list/', VariantsListAPIView.as_view(), name='variant_list'),
     path('variant-create/', VariantsCreateAPIView.as_view(), name='variant_create'),
+    path('quis/<int:pk>/', SciencesDetailAPIView.as_view(), name='variant_create'),
+    path('shop-olish', ShopSotibolishAPIView.as_view())
 
 ]

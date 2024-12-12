@@ -3,7 +3,10 @@ from rest_framework.exceptions import ValidationError
 from django.contrib.auth import authenticate
 
 
-from quiz.models import Users, UserConfig, Shop, Sciences, Test, Questions, Variants
+from quiz.models import (
+    Users, Shop, Sciences, Test,
+    Questions, Variants
+)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -70,7 +73,7 @@ class SciencesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sciences
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'slug']
 
 
 class TestSerializer(serializers.ModelSerializer):
@@ -79,19 +82,29 @@ class TestSerializer(serializers.ModelSerializer):
         slug_field='slug'
     )
     id = serializers.IntegerField(read_only=True)
+    questions = serializers.SerializerMethodField()
 
     class Meta:
         model = Test
-        fields = ['id', 'name', 'degree', 'about', 'sciences']
+        fields = ['id', 'name', 'degree', 'about', 'sciences', 'questions']
+
+    def get_questions(self, obj):
+        questions = obj.questions.all()
+        return QuestionsSerializer(questions, many=True).data
 
 
 class QuestionsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     test = serializers.CharField(source='test.name', read_only=True)
+    variants = serializers.SerializerMethodField()
 
     class Meta:
         model = Questions
-        fields = ['id', 'about', 'test']
+        fields = ['id', 'about', 'test', 'variants']
+
+    def get_variants(self, obj):
+        variants = obj.variants.all()
+        return VariantsSerializer(variants, many=True).data
 
 
 class VariantsSerializer(serializers.ModelSerializer):
@@ -101,3 +114,29 @@ class VariantsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variants
         fields = ['id', 'text', 'is_true', 'question']
+
+
+class ShopSotibolishSerializer(serializers.ModelSerializer):
+    shop_id = serializers.IntegerField(write_only=True)
+    amount = serializers.IntegerField(write_only=True)
+    sale_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+
+    class Meta:
+        model = Shop
+        fields = ['shop_id', 'amount', 'sale_price']
+        read_only_fields = ['sale_price']
+
+    def validate(self, data):
+        shop_id = data.get('shop_id')
+        amount = data.get('amount')
+        try:
+            shop = Shop.objects.get(id=shop_id, is_active=True)
+        except Shop.DoesNotExist:
+            raise serializers.ValidationError({'shop_id': 'Bunday faol mahsulot mavjud emas.'})
+
+        if shop.amount < amount:
+            raise serializers.ValidationError({'amount': 'Mahsulotning yetarli miqdori mavjud emas.'})
+
+        data['sale_price'] = (shop.coin - (shop.coin * shop.sale / 100)) * amount
+        return data
+

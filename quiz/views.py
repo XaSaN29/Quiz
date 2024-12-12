@@ -1,21 +1,28 @@
 from datetime import datetime
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
 from drf_spectacular.utils import extend_schema
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError, NotFound
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import filters
 
-from quiz.filter import TestFilter, QuestionsFilter, VariantsFilter
-from quiz.models import Users, Shop, Sciences, Test, Questions, Variants
-from quiz.serilayzer import UserSerializer, ConfSerializer, LoginSerializer, ShopSerializer, ShopListSerializer, \
-    SciencesSerializer, TestSerializer, QuestionsSerializer, VariantsSerializer
+from quiz.filter import (
+    TestFilter, QuestionsFilter, VariantsFilter
+)
+from quiz.models import (
+    Users, Shop, Sciences, Test,
+    Questions, Variants
+)
+from quiz.serilayzer import (
+    UserSerializer, ConfSerializer, LoginSerializer, ShopSerializer,
+    ShopListSerializer, SciencesSerializer, TestSerializer,
+    QuestionsSerializer, VariantsSerializer, ShopSotibolishSerializer
+)
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -141,3 +148,41 @@ class VariantsCreateAPIView(CreateAPIView):
     queryset = Variants.objects.all()
     serializer_class = VariantsSerializer
 
+
+class SciencesDetailAPIView(APIView):
+    def get(self, request, pk):
+        try:
+            tests = Test.objects.get(pk=pk)
+        except tests.DoesNotExist:
+            raise NotFound("Bu ID ga tegishli fan topilmadi.")
+
+        serializer = TestSerializer(tests)
+        return Response(serializer.data)
+
+
+class ShopSotibolishAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    @extend_schema(
+        request=ShopSotibolishSerializer
+    )
+    def post(self, request):
+        serializer = ShopSotibolishSerializer(data=request.data)
+        if serializer.is_valid():
+            shop_id = serializer.validated_data['shop_id']
+            amount = serializer.validated_data['amount']
+            user = request.user
+
+            shop = Shop.objects.get(id=shop_id)
+            total_price = serializer.validated_data['sale_price']
+            if user.ball >= total_price:
+                user.ball -= total_price
+                user.save()
+                shop.amount -= amount
+                shop.save()
+
+                return Response({'message': 'Tovarni sotib oldingiz'}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({'error': 'Coin yetarli emas'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

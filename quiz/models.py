@@ -9,7 +9,6 @@ from django.db.models import Q
 from django.utils.text import slugify
 
 
-
 class BaseModelClass(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

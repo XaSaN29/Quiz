@@ -7,7 +7,7 @@ from quiz.models import Users, Shop, Variants, Test, Sciences, UserConfig, Quest
 
 @admin.register(Users)
 class UsersAdmin(admin.ModelAdmin):
-    list_display = ('username', 'id',  'email', 'roles', 'degree')
+    list_display = ('username', 'id',  'email', 'roles', 'degree', 'gift__name')
     list_filter = ('roles', 'degree', 'id', 'email')
 
 

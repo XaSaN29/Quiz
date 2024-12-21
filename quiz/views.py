@@ -21,7 +21,7 @@ from quiz.models import (
 from quiz.serilayzer import (
     UserSerializer, ConfSerializer, LoginSerializer, ShopSerializer,
     ShopListSerializer, SciencesSerializer, TestSerializer,
-    QuestionsSerializer, VariantsSerializer, ShopSotibolishSerializer
+    QuestionsSerializer, VariantsSerializer, ShopSotibolishSerializer, UserShopSerializer
 )
 
 
@@ -186,3 +186,14 @@ class ShopSotibolishAPIView(APIView):
                 return Response({'error': 'Coin yetarli emas'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserShopAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserShopSerializer(user)
+        return Response(serializer.data)
+
+

@@ -140,3 +140,8 @@ class ShopSotibolishSerializer(serializers.ModelSerializer):
         data['sale_price'] = (shop.coin - (shop.coin * shop.sale / 100)) * amount
         return data
 
+
+class UserShopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = ['id', 'name', 'amount', 'coin', 'sale']

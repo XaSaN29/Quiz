@@ -22,7 +22,7 @@ class Shop(BaseModelClass):
     abut = models.CharField(max_length=255)
     amount = models.IntegerField()
     coin = models.IntegerField()
-    image = models.ImageField(upload_to='shop/')
+    image = models.ImageField(upload_to='shop/', blank=True, null=True)
     is_active = models.BooleanField(default=False)
     sale = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
 
@@ -50,8 +50,8 @@ class Users(AbstractUser, BaseModelClass):
     about = models.TextField(null=True, blank=True)
     roles = models.CharField(max_length=25, choices=UserAdmin.choices, default=UserAdmin.USER)
     degree = models.CharField(max_length=25, choices=Level.choices, default=Level.Beginner)
-    ball = models.IntegerField(default=0)
-    gift = models.ManyToManyField(Shop, related_name='users')
+    ball = models.IntegerField(default=0, blank=True, null=True)
+    gift = models.ManyToManyField(Shop, related_name='users', blank=True)
     is_verified = models.BooleanField(default=False)
 
     def __str__(self):

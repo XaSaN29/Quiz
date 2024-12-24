@@ -21,8 +21,10 @@ from quiz.models import (
 from quiz.serilayzer import (
     UserSerializer, ConfSerializer, LoginSerializer, ShopSerializer,
     ShopListSerializer, SciencesSerializer, TestSerializer,
-    QuestionsSerializer, VariantsSerializer, ShopSotibolishSerializer, UserShopSerializer
+    QuestionsSerializer, VariantsSerializer, ShopSotibolishSerializer, UserShopSerializer, ResultSerializer,
+    ResultItmSerializer
 )
+from responses.models import Result, ResultItm
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -196,4 +198,15 @@ class UserShopAPIView(APIView):
         serializer = UserShopSerializer(user)
         return Response(serializer.data)
 
+
+class ResultAPIView(CreateAPIView):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class ResultItemAPIView(CreateAPIView):
+    queryset = ResultItm.objects.all()
+    serializer_class = ResultItmSerializer
+    permission_classes = [permissions.IsAuthenticated]
 

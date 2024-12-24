@@ -7,6 +7,7 @@ from quiz.models import (
     Users, Shop, Sciences, Test,
     Questions, Variants
 )
+from responses.models import Result, ResultItm
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -145,3 +146,15 @@ class UserShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
         fields = ['id', 'name', 'amount', 'coin', 'sale']
+
+
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Result
+        fields = ['user', 'test']
+
+
+class ResultItmSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResultItm
+        fields = ['result', 'question', 'answer']

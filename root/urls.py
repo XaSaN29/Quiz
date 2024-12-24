@@ -24,7 +24,7 @@ from quiz.views import (
     SciencesListAPIView, TestCreateAPIView, TestListAPIView,
     QuestionsListAPIView, QuestionsCreateAPIView, VariantsListAPIView,
     VariantsCreateAPIView, SciencesDetailAPIView, ShopSotibolishAPIView,
-    UserShopAPIView
+    UserShopAPIView, ResultAPIView, ResultItemAPIView
 )
 
 
@@ -47,6 +47,8 @@ urlpatterns = [
     path('variant-create/', VariantsCreateAPIView.as_view(), name='variant_create'),
     path('quis/<int:pk>/', SciencesDetailAPIView.as_view(), name='variant_create'),
     path('shop-olish', ShopSotibolishAPIView.as_view()),
-    path('shop-user', UserShopAPIView.as_view())
+    path('shop-user', UserShopAPIView.as_view()),
+    path('result', ResultAPIView.as_view()),
+    path('result-itm', ResultItemAPIView.as_view()),
 
 ]

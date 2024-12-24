@@ -1,9 +1,7 @@
-import datetime
-from datetime import timedelta
-
-from django.db import models
+from datetime import datetime, timedelta
 from django.utils.timezone import now
-from rest_framework.exceptions import ValidationError
+from django.core.exceptions import ValidationError
+from django.db import models
 
 from quiz.models import Users, Questions, Variants, Test
 
@@ -12,14 +10,24 @@ class Result(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='results_user')
     test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name='results_test')
     balls = models.IntegerField(default=0, blank=True, null=True)
-    start_time = models.DateTimeField(default=datetime.datetime.now(), null=True, blank=True)
+    start_time = models.DateTimeField(default=now)
     end_time = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if self.end_time is None:
-            self.end_time = now()
-        if self.start_time is None:
-            raise ValidationError('start_time is required')
+            self.end_time = now() + timedelta(minutes=20)
+
+        if not isinstance(self.start_time, datetime):
+            raise ValidationError('start_time must be a valid datetime object.')
+        if not isinstance(self.end_time, datetime):
+            raise ValidationError('end_time must be a valid datetime object.')
+
+        time_taken = self.end_time - self.start_time
+        if time_taken > timedelta(minutes=30):
+            self.delete()
+            raise ValidationError(
+                "Vaqtingoz 30daqiqadan ko'payib ketti!"
+            )
 
         super().save(*args, **kwargs)
 

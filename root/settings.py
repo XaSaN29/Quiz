@@ -102,11 +102,14 @@ WSGI_APPLICATION = 'root.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',        # Yaratilgan ma'lumotlar bazasi nomi
+        'USER': 'postgres',            # Yaratilgan foydalanuvchi nomi
+        'PASSWORD': 'postgres',    # Foydalanuvchi paroli
+        'HOST': 'localhost',         # PostgreSQL server manzili (Dockerda ishlatgan bo'lsangiz, 'db' bo'lishi mumkin)
+        'PORT': '5432',              # PostgreSQL uchun standart port
     }
 }
-
 
 
 # Password validation
